@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+  {% load static %}
+
+{% block content %}
+{% if error %}
+<div class="alert alert-danger">{{ error }}</div>
+{% endif %}
+
+{% if success %}
+<div class="alert alert-success">{{ success }}</div>
+{% endif %}
+<h2 class="mb-4">Contact Us</h2>
+
+<form method="POST" id="contactForm">
+  {% csrf_token %}
+
+  {{ form.as_p }}
+
+  <button class="btn btn-success">Send Message</button>
+</form>
+
+{% if success %}
+<div class="alert alert-success mt-3">{{ success }}</div>
+{% endif %}
+{% endblock %}

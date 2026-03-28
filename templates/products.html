@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block title %}Products | HTK Farms{% endblock %}
+{% block content %}
+
+<h2>Our Organic Products</h2>
+
+
+<h1>Total Products: {{ products|length }}</h1>
+
+<div class="mb-4">
+
+    <a href="/products/" class="btn btn-outline-success">
+        All
+    </a>
+
+    {% for category in categories %}
+
+    <a href="/products/?category={{ category.id }}" class="btn btn-outline-success">
+        {{ category.name }}
+    </a>
+
+    {% endfor %}
+
+</div>
+
+<div class="row">
+
+    {% for product in products %}
+    {% include 'components/product_card.html' %}
+{% endfor %}
+
+</div>
+
+{% endblock %}

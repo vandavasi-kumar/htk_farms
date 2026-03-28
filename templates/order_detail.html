@@ -1,0 +1,108 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<div class="container mt-4">
+
+    <h3>Order Details</h3>
+
+
+    <div class="card p-3 mb-3">
+        <p><strong>Order ID:</strong> {{ order.id }}</p>
+        <p><strong>Name:</strong> {{ order.name }}</p>
+        <p><strong>Phone:</strong> {{ order.phone }}</p>
+        <p><strong>Status:</strong>
+
+            {% if order.status == "delivered" %}
+            <span style="color:green; font-weight:bold;">🟢 Delivered</span>
+
+            {% elif order.status == "cancelled" %}
+            <span style="color:red; font-weight:bold;">🔴 Cancelled</span>
+
+            {% elif order.status == "placed" %}
+            <span style="color:orange; font-weight:bold;">🟡 Placed</span> <!-- ✅ FIXED -->
+
+            {% elif order.status == "shipped" %}
+            <span style="color:blue; font-weight:bold;">🚚 Shipped</span>
+
+            {% endif %}
+
+        </p>
+        <p><strong>Total:</strong> ₹{{ order.total_price }}</p>
+        <p><strong>Address:</strong> {{ order.address }}</p>
+        <p><strong>Date:</strong> {{ order.created_at }}</p>
+    </div>
+
+    <h4>Items</h4>
+
+    <table class="table">
+        <tr>
+            <th>Product</th>
+            <th>Quantity</th>
+            <th>Price</th>
+            <th>Total</th>
+        </tr>
+
+        {% for item in items %}
+        <tr>
+            <td>{{ item.product.name }}</td>
+            <td>{{ item.quantity }}</td>
+            <td>₹{{ item.price }}</td>
+            <td>₹{{ item.total }}</td>
+        </tr>
+
+        {% endfor %}
+
+    </table>
+    <hr>
+    <h4>Order Summary</h4>
+
+    <div class="card p-3 mt-3">
+
+        <p><strong>Subtotal:</strong> ₹{{ subtotal }}</p>
+
+        {% if discount > 0 %}
+        <p class="text-success">
+            <strong>Discount:</strong> -₹{{ discount }}
+        </p>
+        {% endif %}
+
+        <p><strong>Shipping:</strong>
+            {% if shipping == 0 %}
+            Free
+            {% else %}
+            ₹{{ shipping }}
+            {% endif %}
+        </p>
+
+        <hr>
+
+        <h5><strong>Final Total: ₹{{ final_total }}</strong></h5>
+
+    </div>
+
+
+    <div style="margin-top:15px; display:flex; gap:10px;">
+
+        {% if order.status == "placed" %}
+        <form method="POST" action="{% url 'cancel_order' order.id %}">
+            {% csrf_token %}
+            <button class="btn cancel-btn">Cancel Order</button>
+        </form>
+
+        {% elif order.status == "cancelled" %}
+        <button class="btn disabled-btn">Cancelled</button>
+
+        {% else %}
+        <button class="btn disabled-btn">Cannot Cancel</button>
+        {% endif %}
+
+        {% if order.status != "cancelled" %}
+        <a href="{% url 'download_receipt' order.id %}">
+            <button class="btn receipt-btn">Receipt</button>
+        </a>
+        {% endif %}
+
+    </div>
+</div>
+
+{% endblock %}

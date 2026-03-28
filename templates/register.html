@@ -1,0 +1,76 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+
+{% block content %}
+
+<div class="container" style="max-width:500px">
+
+    <h3 class="mb-4">Create Account</h3>
+
+    <form method="POST" action="/register/">
+        {% csrf_token %}
+
+        <div class="mb-3">
+            <label>Email</label>
+            <div class="input-group">
+                <input type="email" id="email" name="email" class="form-control" value="{{ email }}">
+                <button type="button" id="sendOtpBtn" class="btn btn-success" onclick="sendEmailOTP()">
+                    Send OTP
+                </button>
+            </div>
+            <small id="otpTimer" class="text-muted"></small>
+        </div>
+
+
+        <div class="mb-3">
+            <label>Email OTP</label>
+            <div class="input-group">
+                <input type="number" id="email_otp" name="email_otp" class="form-control" placeholder="Enter OTP"
+                    maxlength="6">
+                <button type="button" class="btn btn-primary" onclick="verifyOTP()">
+                    Verify OTP
+                </button>
+            </div>
+
+            <small id="otpMessage"></small>
+        </div>
+
+        <div class="mb-3">
+            <label>Phone Number</label>
+
+            <div class="input-group">
+
+                <select name="country_code" class="form-select country-code">
+                    <option value="+91" {% if country_code == "+91" %}selected{% endif %}>+91</option>
+                    <option value="+1" {% if country_code == "+1" %}selected{% endif %}>+1</option>
+                </select>
+
+                <input type="text" name="phone" class="form-control" maxlength="10" value="{{ phone }}">
+
+            </div>
+
+        </div>
+
+
+        <div class="mb-3">
+            <label>Password</label>
+            <input type="password" name="password" class="form-control" required>
+            <small class="text-muted">Password must contain at least 8 characters</small>
+        </div>
+
+        <div class="mb-3">
+            <label>Confirm Password</label>
+            <input type="password" name="confirm_password" class="form-control" required>
+        </div>
+
+        <button class="btn btn-success w-100">
+            Create Account
+        </button>
+
+    </form>
+
+</div>
+<script src="{% static 'js/register.js' %}"></script>
+{% endblock %}

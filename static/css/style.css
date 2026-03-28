@@ -1,0 +1,579 @@
+body {
+    padding-top: 50px;
+}
+
+
+.product-card {
+    height: 100%;
+    border-radius: 12px;
+    overflow: hidden;
+    transition: 0.3s ease;
+}
+
+.product-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 12px 25px rgba(0, 0, 0, 0.15);
+}
+
+.product-img {
+    height: 220px;
+    object-fit: cover;
+}
+
+.card-body h5 {
+    font-size: 18px;
+}
+
+.card-body p {
+    font-size: 16px;
+}
+
+
+footer a {
+    text-decoration: none;
+}
+
+footer a:hover {
+    /* text-decoration: ; */
+    color: #ffc107;
+}
+
+
+
+
+.country-code {
+    max-width: 90px;
+}
+
+
+.progress-bar {
+    transition: width 0.5s ease-in-out;
+}
+
+.status-placed {
+    color: green;
+    font-weight: bold;
+}
+
+.status-cancelled {
+    color: red;
+    font-weight: bold;
+}
+
+.filter-btn {
+    padding: 6px 12px;
+    margin-right: 5px;
+    border: none;
+    background-color: #eee;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.filter-btn:hover {
+    background-color: #ddd;
+}
+
+
+.btn {
+    padding: 8px 14px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    margin-right: 8px;
+    font-size: 14px;
+}
+
+/* View */
+.view-btn {
+    background-color: #007bff;
+    color: white;
+}
+
+/* Cancel */
+.cancel-btn {
+    background-color: red;
+    color: white;
+}
+
+/* Receipt */
+.receipt-btn {
+    background-color: green;
+    color: white;
+}
+
+/* Disabled */
+.disabled-btn {
+    background-color: gray;
+    color: white;
+    cursor: not-allowed;
+}
+
+/* Hover effect */
+.btn:hover {
+    opacity: 0.85;
+}
+
+.toast {
+    position: fixed;
+    top: 80px;
+    /* below navbar */
+    left: 50%;
+    transform: translateX(-50%);
+    background: green;
+    color: white;
+    padding: 12px 20px;
+    border-radius: 8px;
+    display: none;
+    z-index: 9999;
+    font-weight: bold;
+    min-width: 250px;
+    text-align: center;
+    opacity: 0;
+    transition: opacity 0.3s ease, top 0.3s ease;
+}
+
+.toast.show {
+    display: block;
+    opacity: 1;
+    top: 90px;
+}
+
+.loader {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 9999;
+    justify-content: center;
+    align-items: center;
+}
+
+.spinner {
+    width: 50px;
+    height: 50px;
+    border: 5px solid #fff;
+    border-top: 5px solid green;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+.card {
+    transition: 0.3s;
+    cursor: pointer;
+    border-radius: 12px;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+
+/* smooth transition */
+body {
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* DARK MODE */
+.dark-mode {
+    background-color: #121212;
+    color: #ffffff;
+}
+
+.dark-mode .navbar {
+    background-color: #1f1f1f !important;
+}
+
+.dark-mode .card {
+    background-color: #1e1e1e;
+    color: white;
+    border: 1px solid #333;
+}
+
+.dark-mode .dropdown-menu {
+    background-color: #1e1e1e;
+    border: 1px solid #333;
+}
+
+.dark-mode .dropdown-item {
+    color: #ddd;
+}
+
+.dark-mode .dropdown-item:hover {
+    background-color: #333;
+}
+
+/* button hover */
+#modeToggle {
+    cursor: pointer;
+}
+
+/* Light mode */
+.navbar .btn-outline-dark {
+    color: black;
+    border-color: black;
+}
+
+/* Dark mode */
+.dark-mode .btn-outline-dark {
+    color: white;
+    border-color: white;
+}
+
+.dark-mode .btn-light {
+    background-color: #333;
+    color: white;
+    border: none;
+}
+
+/* 🌙 DARK MODE - MODAL FIX */
+.dark-mode .modal-content {
+    background-color: #1e1e1e;
+    color: #ffffff;
+}
+
+.dark-mode .modal-header {
+    border-bottom: 1px solid #444;
+}
+
+.dark-mode .modal-footer {
+    border-top: 1px solid #444;
+}
+
+.dark-mode .modal-title {
+    color: #ffffff;
+}
+
+.dark-mode .btn-close {
+    filter: invert(1);
+    /* makes close icon visible */
+}
+
+.dark-mode .form-control {
+    background-color: #2a2a2a;
+    color: white;
+    border: 1px solid #555;
+}
+
+.dark-mode .form-control::placeholder {
+    color: #aaa;
+}
+
+.dark-mode .btn-success {
+    background-color: #28a745;
+    border: none;
+}
+
+
+.navbar .btn {
+    height: 32px;
+    padding: 6px 10px;
+    display: flex;
+    align-items: center;
+    font-size: 13px;
+}
+
+.eye {
+    position: absolute;
+    right: 12px;
+    top: 8px;
+    cursor: pointer;
+    font-size: 18px;
+    color: #555;
+}
+
+.eye:hover {
+    color: black;
+}
+
+.stars span {
+    font-size: 20px;
+    color: #ccc;
+    transition: 0.3s;
+}
+
+.stars .filled {
+    color: gold;
+    transform: scale(1.2);
+}
+
+.star-rating span {
+    font-size: 25px;
+    cursor: pointer;
+    color: #ccc;
+    transition: 0.2s;
+}
+
+.star-rating span.active {
+    color: gold;
+    transform: scale(1.2);
+}
+
+
+/* Section background */
+.testimonial-section {
+    background: linear-gradient(to right, #f8fff5, #ffffff);
+}
+
+/* Card design */
+.testimonial-card {
+    background: #ffffff;
+    border-radius: 16px;
+    max-width: 420px;
+    width: 100%;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    transition: 0.3s;
+}
+
+.testimonial-card:hover {
+    transform: translateY(-6px);
+}
+
+.testimonial-text {
+    font-style: italic;
+    color: #555;
+    font-size: 15px;
+}
+
+/* Profile image */
+.profile-img {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid #28a745;
+}
+
+/* Stars */
+.stars span {
+    font-size: 18px;
+    color: #ddd;
+}
+
+.stars .filled {
+    color: #ffc107;
+}
+
+/* Carousel controls visibility */
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+    background-color: #333;
+    border-radius: 50%;
+    padding: 10px;
+}
+
+
+
+/* //////////////////////////////////// */
+/* HERO SECTION */
+.hero-section {
+    height: 450px;
+    /* fixed height */
+    background: linear-gradient(to right, #eef9f0, #ffffff);
+    padding: 20px 0;
+    height: 380px;
+    display: flex;
+    align-items: center;
+}
+
+.hero-title {
+    font-size: clamp(28px, 5vw, 52px);
+    font-weight: 700;
+    color: #2f4f2f;
+}
+
+.hero-subtitle {
+    font-size: 18px;
+    color: #555;
+}
+
+.hero-img {
+    width: 100%;
+    /* take full column */
+    max-width: 450px;
+    height: auto;
+    /* control size */
+    border-radius: 12px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+}
+
+.container h5 {
+    font-weight: 600;
+    color: #2f4f2f;
+}
+
+
+
+/* FOOTER */
+.footer-section {
+    background: #f8f9fa;
+    color: #333;
+    border-top: 3px solid #28a745;
+
+}
+
+.footer-section h5 {
+    margin-bottom: 15px;
+    font-weight: 600;
+}
+
+.footer-section a {
+    text-decoration: none;
+    color: #333;
+    display: block;
+    margin-bottom: 8px;
+}
+
+.footer-section a:hover {
+    color: #28a745;
+}
+
+.footer-bottom {
+    background: #e9ecef;
+    font-size: 14px;
+}
+
+.footer-heading {
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 10px;
+}
+
+.footer-text {
+    font-size: 14px;
+    color: #ccc;
+    line-height: 1.6;
+}
+
+.footer-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.footer-list li {
+    margin-bottom: 6px;
+    /* reduces spacing */
+}
+
+.footer-list a {
+    color: #ccc;
+    text-decoration: none;
+    font-size: 14px;
+}
+
+.footer-list a:hover {
+    color: #28a745;
+}
+
+
+/* FORM CARD */
+.testimonial-form-card {
+    background: #ffffff;
+    border-radius: 16px;
+    border: 1px solid #eee;
+}
+
+/* INPUT FOCUS */
+.form-control:focus {
+    border-color: #28a745;
+    box-shadow: 0 0 5px rgba(40, 167, 69, 0.3);
+}
+
+/* STAR RATING */
+.star-rating span {
+    font-size: 28px;
+    cursor: pointer;
+    color: #ccc;
+    margin: 0 3px;
+    transition: 0.2s;
+}
+
+.star-rating span:hover,
+.star-rating span.active {
+    color: #ffc107;
+    transform: scale(1.2);
+}
+
+.container h3 {
+    color: #2f4f2f;
+}
+
+section,
+.container {
+    margin-bottom: 40px;
+}
+
+.btn {
+    transition: 0.3s;
+    white-space: nowrap;
+
+}
+
+.btn:hover {
+    transform: translateY(-2px);
+}
+
+.navbar-nav {
+    flex-wrap: wrap;
+}
+
+.container {
+    max-width: 1140px;
+}
+
+@media (max-width: 992px) {
+
+    .hero-section {
+        text-align: center;
+    }
+
+    .hero-title {
+        font-size: 32px;
+    }
+
+    .hero-img {
+        margin-top: 20px;
+    }
+}
+
+
+/* payment */
+.tab-btn {
+    flex: 1;
+    padding: 8px;
+    border: none;
+    background: #eee;
+    cursor: pointer;
+}
+
+.tab-btn.active {
+    background: #0d6efd;
+    color: white;
+}
+
+
+.navbar {
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+    min-height: 40px;
+}
+
+.navbar-brand {
+    font-size: 20px;
+    padding: 8px 12px 8px 12px;
+}
+
+.navbar-nav .nav-link {
+    padding-top: 6px;
+    padding-bottom: 6px;
+    font-size: 14px;
+}

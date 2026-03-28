@@ -1,0 +1,81 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+<!-- 🌿 HERO SECTION -->
+<div class="bg-light py-5 text-center">
+    <div class="container">
+        <h1 class="fw-bold">About HTK Farms 🌿</h1>
+        <p class="text-muted mt-3">
+            Delivering fresh, organic, and healthy farm products directly to your home.
+        </p>
+    </div>
+</div>
+
+<!-- 🌱 ABOUT CONTENT -->
+<div class="container my-5">
+    <div class="row align-items-center">
+
+        <!-- Image -->
+        <div class="col-md-6">
+            <img src="{% static 'images/farm.png' %}" class="img-fluid rounded shadow">
+        </div>
+
+        <!-- Text -->
+        <div class="col-md-6">
+            <h3>Who We Are</h3>
+            <p class="text-muted">
+                HTK Farms is dedicated to providing high-quality organic products directly from farms to your doorstep.
+                We believe in sustainability, freshness, and supporting local farmers.
+            </p>
+
+            <p class="text-muted">
+                Our mission is to make healthy living easy and accessible for everyone by delivering farm-fresh goods across India.
+            </p>
+        </div>
+
+    </div>
+</div>
+
+<!-- 🌿 WHY CHOOSE US -->
+<div class="bg-light py-5">
+    <div class="container text-center">
+
+        <h3 class="mb-4">Why Choose Us?</h3>
+
+        <div class="row">
+
+            <div class="col-md-4">
+                <div class="p-4">
+                    <h5>🌱 100% Organic</h5>
+                    <p class="text-muted">No chemicals, no preservatives — only natural products.</p>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="p-4">
+                    <h5>🚚 Fast Delivery</h5>
+                    <p class="text-muted">We deliver across India via India Post.</p>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="p-4">
+                    <h5>🤝 Trusted Farmers</h5>
+                    <p class="text-muted">We work directly with farmers to ensure quality.</p>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+<!-- 🌾 CALL TO ACTION -->
+<div class="text-center py-5">
+    <h3>Start Your Healthy Journey Today 🌿</h3>
+    <a href="/products/" class="btn btn-success mt-3">Shop Now</a>
+</div>
+
+{% endblock %}

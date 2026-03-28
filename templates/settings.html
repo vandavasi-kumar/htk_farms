@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container mt-4" style="max-width:700px;">
+
+  <h2 class="mb-4 text-center">⚙️ Account Settings</h2>
+
+  <!-- 👤 ACCOUNT SETTINGS -->
+  <div class="card p-4 mb-4 shadow-sm">
+    <h5 class="mb-3">👤 Profile Details</h5>
+
+    <form method="POST">
+      {% csrf_token %}
+      <input type="hidden" name="action" value="update">
+
+      <input name="name" value="{{ profile.full_name }}" placeholder="Full Name" class="form-control mb-3" required>
+
+      <input name="phone" value="{{ profile.phone }}" placeholder="Phone" class="form-control mb-3" required
+        pattern="[0-9]{10}">
+
+      <input name="address1" value="{{ profile.address_line1 }}" placeholder="Address Line 1" class="form-control mb-3"
+        required>
+
+      <input name="address2" value="{{ profile.address_line2 }}" placeholder="Address Line 2" class="form-control mb-3">
+
+      <input name="city" value="{{ profile.city }}" placeholder="City" class="form-control mb-3" required>
+
+      <!-- ✅ NEW FIELD -->
+      <input name="state" value="{{ profile.state }}" placeholder="State" class="form-control mb-3" required>
+
+      <input name="pincode" value="{{ profile.pincode }}" placeholder="Pincode" class="form-control mb-3" required
+        pattern="[0-9]{6}">
+
+      <button class="btn btn-success w-100">Save Details</button>
+    </form>
+  </div>
+
+  <!-- 🔒 CHANGE PASSWORD -->
+  <div class="card p-4 mb-4 shadow-sm">
+    <h5 class="mb-3">🔒 Security</h5>
+
+    <a href="{% url 'change_password' %}" class="btn btn-warning w-100">
+      🔐 Change Password
+    </a>
+  </div>
+
+  <!-- ❌ DELETE ACCOUNT -->
+  <div class="card p-4 shadow-sm border-danger">
+    <h5 class="mb-3 text-danger">⚠️ Danger Zone</h5>
+
+    <form method="POST">
+      {% csrf_token %}
+      <input type="hidden" name="action" value="delete">
+
+      <input type="password" name="password" placeholder="Enter password to delete account" class="form-control mb-3">
+
+      <button class="btn btn-danger w-100">
+        ❌ Delete Account
+      </button>
+    </form>
+  </div>
+
+</div>
+
+{% endblock %}

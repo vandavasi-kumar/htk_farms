@@ -1,0 +1,143 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-5">
+
+            <div class="card shadow p-4">
+
+                <!-- Logo -->
+                <h4 class="text-center text-primary fw-bold">HTK Farms</h4>
+                <h5 class="text-center mb-3">₹{{ total }}</h5>
+
+                <!-- Address -->
+                <div class="mb-3">
+                    <small class="text-muted">Deliver to</small>
+                    <p class="mb-0"><strong>{{ name }}</strong></p>
+                    <p class="mb-0">{{ address }}</p>
+                    <p>📞 {{ phone }}</p>
+                </div>
+
+                <a href="{% url 'checkout' %}" class="btn btn-sm btn-outline-primary mb-3">
+                    Change Address
+                </a>
+
+                <!-- Tabs -->
+                <div class="d-flex mb-3">
+                    <button type="button" class="tab-btn active" onclick="showTab('upi', event)">UPI</button>
+                    <button type="button" class="tab-btn" onclick="showTab('card', event)">Card</button>
+                    <button type="button" class="tab-btn" onclick="showTab('cod', event)">COD</button>
+                </div>
+
+                <!-- FORM -->
+                <form method="POST" id="paymentForm">
+                    {% csrf_token %}
+
+                    <!-- Hidden field -->
+                    <input type="hidden" name="payment" id="paymentMethod" value="UPI">
+
+                    <!-- UPI -->
+                    <div id="upi-section">
+                        <input type="text" id="upiId" class="form-control mb-2" placeholder="Enter UPI ID">
+                    </div>
+
+                    <!-- CARD -->
+                    <div id="card-section" style="display:none;">
+                        <input type="text" id="cardNumber" class="form-control mb-2" placeholder="Card Number">
+                        <input type="text" id="expiry" class="form-control mb-2" placeholder="MM/YY">
+                        <input type="text" id="cvv" class="form-control mb-2" placeholder="CVV">
+                    </div>
+
+                    <!-- COD -->
+                    <div id="cod-section" style="display:none;">
+                        <p class="text-muted">Pay with cash upon delivery.</p>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary w-100 mt-3" onclick="return validatePayment()">
+                        Pay & Place Order
+                    </button>
+
+                </form>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<style>
+.tab-btn {
+    flex: 1;
+    padding: 8px;
+    border: none;
+    background: #eee;
+    cursor: pointer;
+}
+
+.tab-btn.active {
+    background: #0d6efd;
+    color: white;
+}
+</style>
+
+<script>
+function showTab(type, event) {
+    document.getElementById('upi-section').style.display = 'none';
+    document.getElementById('card-section').style.display = 'none';
+    document.getElementById('cod-section').style.display = 'none';
+
+    document.getElementById(type + '-section').style.display = 'block';
+
+    document.getElementById('paymentMethod').value = type.toUpperCase();
+
+    let tabs = document.querySelectorAll('.tab-btn');
+    tabs.forEach(btn => btn.classList.remove('active'));
+
+    event.target.classList.add('active');
+}
+
+// Validation
+function validatePayment() {
+    let method = document.getElementById('paymentMethod').value;
+
+    if (method === "UPI") {
+        let upi = document.getElementById('upiId').value;
+        let upiRegex = /^[\w.-]+@[\w.-]+$/;
+
+        if (!upiRegex.test(upi)) {
+            alert("❌ Invalid UPI ID");
+            return false;
+        }
+    }
+
+    if (method === "CARD") {
+        let card = document.getElementById('cardNumber').value;
+        let expiry = document.getElementById('expiry').value;
+        let cvv = document.getElementById('cvv').value;
+
+        let cardRegex = /^[0-9]{16}$/;
+        let expiryRegex = /^(0[1-9]|1[0-2])\/\d{2}$/;
+        let cvvRegex = /^[0-9]{3}$/;
+
+        if (!cardRegex.test(card)) {
+            alert("❌ Card must be 16 digits");
+            return false;
+        }
+
+        if (!expiryRegex.test(expiry)) {
+            alert("❌ Expiry must be MM/YY");
+            return false;
+        }
+
+        if (!cvvRegex.test(cvv)) {
+            alert("❌ CVV must be 3 digits");
+            return false;
+        }
+    }
+
+    return true;
+}
+</script>
+
+{% endblock %}

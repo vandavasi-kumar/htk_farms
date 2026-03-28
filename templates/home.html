@@ -1,0 +1,213 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Home | HTK Farms{% endblock %}
+{% block content %}
+<!-- hero section -->
+<div class="hero-section d-flex align-items-center text-center text-md-start">
+    <div class="container">
+        <div class="row align-items-center">
+
+            <!-- Text -->
+            <div class="col-md-6">
+                <h1 class="hero-title">Pure Cold-Pressed Groundnut Oil</h1>
+                <p class="hero-subtitle">
+                    Fresh • Natural • Direct from Farmers
+                </p>
+
+                <a href="/products/" class="btn btn-success me-3 mt-3 px-4 py-2 shadow-sm">
+                    Shop Now
+                </a>
+
+                <a href="/products/" class="btn btn-success me-3 mt-3 px-4 py-2 shadow-sm">
+                    Explore Products
+                </a>
+            </div>
+
+            <!-- Image -->
+            <div class="col-md-6 text-center">
+                <img src="{% static 'images/groundnut.jpg' %}" class="img-fluid hero-img">
+            </div>
+
+        </div>
+    </div>
+</div>
+<!-- trust section -->
+<div class="container py-4 border-top border-bottom">
+    <div class="row text-center">
+
+        <div class="col-md-3">
+            <h5>🌿 100% Natural</h5>
+        </div>
+
+        <div class="col-md-3">
+            <h5>🚫 No Chemicals</h5>
+        </div>
+
+        <div class="col-md-3">
+            <h5>🏺 Cold Pressed</h5>
+        </div>
+
+        <div class="col-md-3">
+            <h5>🚜 Farm Direct</h5>
+        </div>
+
+    </div>
+</div>
+<div class="container py-5">
+
+    <h2 class="text-center mb-5 fw-bold">Featured Products</h2>
+
+    <div class="row g-4">
+
+        {% for product in products %}
+        {% include 'components/product_card.html' with product=product %}
+        {% endfor %}
+
+    </div>
+    <!-- 🌿 ABOUT PREVIEW -->
+    <div class="container my-5">
+
+        <div class="row align-items-center">
+
+            <!-- Image -->
+            <div class="col-md-6">
+                <img src="{% static 'images/farm.png' %}" class="img-fluid rounded shadow">
+            </div>
+
+            <!-- Text -->
+            <div class="col-md-6">
+                <h3 class="fw-bold mb-3">About HTK Farms 🌿</h3>
+
+                <p class="text-muted">
+                    We provide fresh, organic farm products directly from farmers to your home.
+                    Our focus is on purity, quality, and traditional methods.
+                </p>
+
+                <p class="text-muted">
+                    Supporting local farmers and delivering healthy food across India.
+                </p>
+
+                <!-- Button -->
+                <a href="{% url 'about' %}" class="btn btn-outline-success mt-2">
+                    Learn More
+                </a>
+            </div>
+
+        </div>
+
+    </div>
+    <!-- testimonial -->
+    <div class="testimonial-section py-5">
+
+        <div class="container">
+
+            <h2 class="text-center mb-5 fw-bold">
+                What Our Customers Say 🌿
+            </h2>
+
+            <div id="testimonialCarousel" class="carousel slide" data-bs-ride="carousel">
+
+                <div class="carousel-inner">
+
+                    {% for t in testimonials %}
+                    <div class="carousel-item {% if forloop.first %}active{% endif %}">
+
+                        <div class="d-flex justify-content-center">
+
+                            <div class="testimonial-card p-4 text-center">
+
+                                <!-- Image -->
+                                <img src="{% if t.image %}{{ t.image.url }}{% else %}{% static 'images/user.png' %}{% endif %}"
+                                    class="profile-img mb-3">
+
+                                <!-- Name -->
+                                <h5 class="fw-bold mb-1">{{ t.name }}</h5>
+
+                                <!-- Stars -->
+                                <div class="stars mb-2">
+                                    {% for i in "12345" %}
+                                    <span class="{% if forloop.counter <= t.rating %}filled{% endif %}">★</span>
+                                    {% endfor %}
+                                </div>
+
+                                <!-- Message -->
+                                <p class="testimonial-text">
+                                    "{{ t.message }}"
+                                </p>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+                    {% endfor %}
+
+                </div>
+
+                <!-- Controls -->
+                <button class="carousel-control-prev" type="button" data-bs-target="#testimonialCarousel"
+                    data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon"></span>
+                </button>
+
+                <button class="carousel-control-next" type="button" data-bs-target="#testimonialCarousel"
+                    data-bs-slide="next">
+                    <span class="carousel-control-next-icon"></span>
+                </button>
+
+            </div>
+
+        </div>
+    </div>
+    {% if user.is_authenticated and not user.is_superuser %}
+
+    <div class="container my-5">
+
+        <div class="row justify-content-center">
+            <div class="col-md-7">
+
+                <div class="testimonial-form-card p-4 shadow-sm">
+
+                    <h4 class="text-center mb-4">Leave a Testimonial 🌿</h4>
+
+                    <form method="POST" action="/add-testimonial/" enctype="multipart/form-data">
+                        {% csrf_token %}
+
+                        <!-- Name -->
+                        <input type="text" name="name" class="form-control mb-3" value="{{ user.username }}">
+
+                        <!-- Message -->
+                        <textarea name="message" class="form-control mb-3" placeholder="Your feedback"></textarea>
+
+                        <!-- ⭐ Rating -->
+                        <div class="mb-3 star-rating text-center">
+                            <span onclick="setRating(1)">★</span>
+                            <span onclick="setRating(2)">★</span>
+                            <span onclick="setRating(3)">★</span>
+                            <span onclick="setRating(4)">★</span>
+                            <span onclick="setRating(5)">★</span>
+                        </div>
+
+                        <input type="hidden" name="rating" id="ratingInput">
+
+                        <!-- Image -->
+                        <input type="file" name="image" class="form-control mb-3">
+
+                        <!-- Button -->
+                        <button class="btn btn-success w-100 py-2">
+                            Submit Testimonial
+                        </button>
+
+                    </form>
+
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+    {% endif %}
+
+</div>
+{% endblock %}

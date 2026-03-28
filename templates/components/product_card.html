@@ -1,0 +1,26 @@
+<div class="col-md-4 mb-4">
+    <div class="card h-100 product-card">
+
+        <img src="{{ product.card_image.url }}" class="card-img-top product-img">
+
+        <div class="card-body d-flex flex-column">
+
+            <h5>{{ product.name }}</h5>
+            <p>₹ {{ product.price }}</p>
+
+            <div class="mt-auto d-flex gap-2">
+                <a href="/product/{{ product.id }}/" class="btn btn-success w-50">
+                    View
+                </a>
+                {% if not user.is_superuser %}
+                <button onclick="addToCart('{{ product.id }}')" class="btn btn-warning w-50">
+                    🛒 Add
+                </button>
+                {% endif %}
+            </div>
+
+        </div>
+
+    </div>
+</div>
+

@@ -1,0 +1,201 @@
+{% extends "admin/base.html" %}
+
+{% block content %}
+
+<div class="container mt-4">
+
+    <h2 class="mb-4 fw-bold">📦 All Orders</h2>
+
+    {% if request.GET.start and request.GET.end %}
+    <p class="text-muted">
+        Showing results from
+        <strong>{{ request.GET.start }}</strong>
+        to
+        <strong>{{ request.GET.end }}</strong>
+    </p>
+    {% endif %}
+
+    <!-- ✅ ADD HERE -->
+    <div class="card shadow-sm border-0 mb-4">
+        <div class="card-body">
+
+            <form method="GET" class="row g-2 align-items-center">
+
+                <div class="col-md-4">
+                    <label class="form-label small">Start Date</label>
+                    <input type="date" name="start" id="startDate" class="form-control" value="{{ request.GET.start }}">
+                </div>
+
+                <div class="col-md-4">
+                    <label class="form-label small">End Date</label>
+                    <input type="date" name="end" id="endDate" class="form-control" value="{{ request.GET.end }}">
+                </div>
+
+                <div class="col-md-2 mt-4">
+                    <button type="submit" class="btn btn-dark w-100">
+                        Apply Filters
+                    </button>
+                </div>
+
+                <div class="col-md-2 mt-4">
+                    <a href="/admin-orders/" class="btn btn-outline-secondary w-100">
+                        Reset
+                    </a>
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label small">Order Status</label>
+                    <select name="status" class="form-select" onchange="this.form.submit()">
+
+                        <option value="">All</option>
+
+                        <option value="placed" {% if request.GET.status == "placed" %}selected{% endif %}>
+                            Placed
+                        </option>
+
+                        <option value="shipped" {% if request.GET.status == "shipped" %}selected{% endif %}>
+                            Shipped
+                        </option>
+
+                        <option value="delivered" {% if request.GET.status == "delivered" %}selected{% endif %}>
+                            Delivered
+                        </option>
+
+
+                        <option value="cancelled" {% if request.GET.status == "cancelled" %}selected{% endif %}>
+                            Cancelled
+                        </option>
+
+                    </select>
+                </div>
+
+            </form>
+
+        </div>
+    </div>
+    <div class="card shadow-lg border-0">
+        <div class="card-body">
+
+            <div class="table-responsive">
+                <div class="mb-3 d-flex gap-2">
+
+                    <a href="/admin-orders/" class="btn btn-outline-dark btn-sm">All</a>
+
+                    <a href="/admin-orders/?filter=today" class="btn btn-outline-primary btn-sm">
+                        Today
+                    </a>
+
+                    <a href="/admin-orders/?filter=week" class="btn btn-outline-success btn-sm">
+                        Last 7 Days
+                    </a>
+
+                </div>
+
+                <table class="table table-hover align-middle">
+
+                    <thead class="table-dark">
+                        <tr>
+                            <th>ID</th>
+                            <th>User</th>
+                            <th>Total</th>
+                            <th>Status</th>
+                            <th>Update</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        {% for order in orders %}
+                        <tr>
+                            <td><strong>#{{ order.id }}</strong></td>
+
+                            <td>{{ order.user.username }}</td>
+
+                            <td class="fw-bold text-success">₹{{ order.total_price }}</td>
+
+                            <td>
+                                {% if order.status == "placed" %}
+                                <span class="badge bg-warning text-dark">Placed</span>
+
+                                {% elif order.status == "shipped" %}
+                                <span class="badge bg-info text-dark">Shipped</span>
+
+                                {% elif order.status == "delivered" %}
+                                <span class="badge bg-success">Delivered</span>
+
+                                {% elif order.status == "cancelled" %}
+                                <span class="badge bg-danger">Cancelled</span>
+                                {% endif %}
+                            </td>
+
+                            <td>
+                                {% if order.status == "placed" or order.status == "shipped" %}
+                                <form method="POST" action="{% url 'update_order_status' order.id %}"
+                                    class="d-flex gap-2">
+                                    {% csrf_token %}
+
+                                    <select name="status" class="form-select form-select-sm">
+
+                                        <option value="placed" {% if order.status == "placed" %}selected{% endif %}>
+                                            Placed
+                                        </option>
+
+                                        <option value="shipped" {% if order.status == "shipped" %}selected{% endif %}>
+                                            Shipped
+                                        </option>
+
+                                        <option value="delivered" {% if order.status == "delivered" %}selected{% endif %}>
+                                            Delivered
+                                        </option>
+
+                                        <option value="cancelled" {% if order.status == "cancelled" %}selected{% endif %}>
+                                            Cancelled
+                                        </option>
+
+                                    </select>
+
+                                    <button class="btn btn-sm btn-primary">Update</button>
+                                </form>
+                                {% else %}
+                                {% if order.status == 'delivered' %}<span class="badge bg-success">Delivered</span>{% elif order.status == 'cancelled' %}<span class="badge bg-danger">Cancelled</span>{% endif %}
+                                {% endif %}
+
+                            </td>
+
+
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+    </div>
+
+</div>
+<script>
+    document.querySelector("form").addEventListener("submit", function (e) {
+
+        const start = document.getElementById("startDate").value;
+        const end = document.getElementById("endDate").value;
+
+        if (!start || !end) {
+            alert("Please select both start and end date");
+            e.preventDefault();
+            return;
+        }
+
+        if (start > end) {
+            alert("End date must be greater than start date");
+            e.preventDefault();
+            return;
+        }
+
+    });
+</script>
+<script>
+    if (performance.getEntriesByType("navigation")[0].type === "reload") {
+        window.location.href = "/admin-orders/";
+    }
+</script>
+{% endblock %}

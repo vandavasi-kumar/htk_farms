@@ -1,0 +1,197 @@
+{% extends 'base.html' %}
+
+{% block content %}
+{% load static %}
+<h3>Checkout</h3>
+
+<form method="POST" id="checkoutForm">
+    {% csrf_token %}
+
+    <div class="container mt-4">
+
+        <div class="row">
+
+            <!-- LEFT SIDE (Address) -->
+            <div class="col-md-7">
+
+                <div class="card p-4 shadow-sm">
+                    <h4 class="mb-3">Delivery Address</h4>
+                    {% if request.session.saved_name %}
+                    <p class="text-success fw-bold">
+                        Using saved address ✅
+                    </p>
+                    {% endif %}
+                    <button onclick="removeSavedAddress()" class="btn btn-sm btn-outline-danger">
+                        Clear Saved Address
+                    </button>
+
+                    <!-- <form method="POST"> -->
+                        {% csrf_token %}
+                        <div class="mb-3">
+                            <label class="form-label">Full Name</label>
+                            {{ form.name }}
+                            <div id="nameError" class="text-danger small"></div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Mobile Number</label>
+                            {{ form.phone }}
+                            <div id="phoneError" class="text-danger small"></div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Flat, House No, Building</label>
+                            {{ form.address_line1 }}
+                            <div id="address1Error" class="text-danger small"></div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Area, Street, Village</label>
+                            {{ form.address_line2 }}
+                            <div id="address2Error" class="text-danger small"></div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Landmark (Optional)</label>
+                            {{ form.landmark }}
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Pincode</label>
+                            {{ form.pincode }}
+                            <div id="pincodeError" class="text-danger small"></div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">City</label>
+                                {{ form.city }}
+                                <div id="cityError" class="text-danger small"></div>
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">State</label>
+                                {{ form.state }}
+                                <div id="stateError" class="text-danger small"></div>
+                            </div>
+                        </div>
+                        <!-- MOBILE BUTTON (only visible on small screens) -->
+                        <button class="btn btn-success w-100 mt-3 d-md-none">
+                            Place Order
+                        </button>
+
+                    <!-- </form> -->
+                </div>
+
+            </div>
+
+            <!-- RIGHT SIDE (Order Summary) -->
+            <div class="col-md-5">
+
+                <div class="card p-3 shadow-sm sticky-top" style="top:100px;">
+                    <h5>Order Summary</h5>
+
+                    <ul class="list-group mb-3">
+                        {% for item in cart_items %}
+                        <li class="list-group-item d-flex justify-content-between">
+                            {{ item.product.name }} (x{{ item.quantity }})
+                            <span>₹{{ item.total_price }}</span>
+                        </li>
+                        {% endfor %}
+                    </ul>
+
+                    <!-- Coupon Section -->
+                    <div class="mb-3">
+                        <p id="couponStatus"></p>
+                        <p id="couponSavings" class="fw-bold text-success"></p>
+
+                        <a href="#" onclick="toggleCoupon()">Have a Coupon?</a>
+
+                        {% if request.session.coupon_code %}
+                        <p class="text-success mt-2">
+                            Coupon Applied: {{ request.session.coupon_code }} ✅
+                        </p>
+
+                        <button onclick="removeCoupon()" class="btn btn-sm btn-outline-danger">
+                            Remove Coupon
+                        </button>
+                        {% endif %}
+
+                        <div id="couponBox" style="display:none;" class="mt-2">
+                            <input type="text" id="couponInput" placeholder="Enter coupon code" class="form-control"
+                                onkeyup="applyCouponAuto(event)">
+                        </div>
+                    </div>
+
+                    <!-- Price Details -->
+                    <h5>Subtotal: ₹<span id="subtotal">{{ subtotal }}</span></h5>
+
+                    <h5>Discount: ₹<span id="discount">{{ discount|default:0 }}</span></h5>
+
+                    <h5>
+                        Shipping:
+                        <span id="shipping">
+                            {% if shipping == 0 %}
+                            Free
+                            {% else %}
+                            ₹{{ shipping }}
+                            {% endif %}
+                        </span>
+                    </h5>
+
+                    <hr>
+
+                    <h4><b>Final Total: ₹<span id="finalTotal">{{ total }}</span></b></h4>
+
+                    <!-- Free Shipping Message -->
+                    <p id="freeShippingMsg" class="fw-bold mt-2"></p>
+
+                    <!-- Add More Button -->
+                    <a href="{% url 'products' %}" class="btn btn-sm btn-outline-primary mb-2">
+                        Add More Products
+                    </a>
+
+                    <!-- Progress Bar -->
+                    <div class="mt-2">
+                        <div class="progress" style="height: 8px;">
+                            <div id="shippingProgressBar" class="progress-bar bg-warning" role="progressbar"
+                                style="width: 0%">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Percentage -->
+                    <p id="progressPercent" class="small text-muted mt-1"></p>
+
+                    <!-- Free Delivery Badge -->
+                    <!-- <span id="freeBadge" class="badge bg-success mt-2" style="display:none;">
+                        🎉 Free Delivery Unlocked
+                    </span> -->
+
+                    <!-- Suggestion Box -->
+                    <div id="suggestBox" class="mt-2" style="display:none;">
+                        <p class="small text-muted">
+                            Add more products to unlock free delivery
+                        </p>
+                        <a href="{% url 'products' %}" class="btn btn-sm btn-outline-primary">
+                            Browse Products
+                        </a>
+                    </div>
+
+                    <!-- Place Order Button -->
+                    <button form="checkoutForm" class="btn btn-success w-100 mt-3">
+                        Place Order
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+</form>
+
+
+<script src="{% static 'js/checkout.js' %}"></script>
+{% endblock %}
