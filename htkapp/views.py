@@ -3,6 +3,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.http import JsonResponse, HttpResponse
 from django.conf import settings
 from django.utils import timezone
+from django.template.loader import render_to_string
 # Authentication
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout, update_session_auth_hash
@@ -12,7 +13,7 @@ from django.contrib import messages
 from django.db.models import Sum, Count
 from django.db.models.functions import TruncDate
 # Forms
-from .forms import CheckoutForm, ContactForm
+from .forms import CheckoutForm, ContactForm, ProductForm
 # Models
 from .models import (
     Product, CartItem, UserProfile, Category,
@@ -973,62 +974,37 @@ def admin_products(request):
 
 @admin_required
 def add_product(request):
-
-    categories = Category.objects.all()
-
     if request.method == "POST":
-        name = request.POST.get("name")
-        category_id = request.POST.get("category")
-        price = float(request.POST.get("price"))
-        stock = int(request.POST.get("stock"))
-        description = request.POST.get("description")
-        is_featured = request.POST.get("is_featured") == "on"
-
-        card_image = request.FILES.get("card_image")
-        detail_image = request.FILES.get("detail_image")
-
-        category = Category.objects.get(id=category_id)
-
-        Product.objects.create(
-            name=name,
-            category=category,
-            price=price,
-            stock=stock,
-            description=description,
-            is_featured=is_featured,
-            card_image=card_image,
-            detail_image=detail_image
-        )
-
-        return redirect("admin_products")
-
-    return render(request, "admin/add_product.html", {"categories": categories})
+        form = ProductForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Product added successfully!")
+            return redirect("admin_products")
+    else:
+        form = ProductForm()
+    
+    categories = Category.objects.all()
+    return render(request, "admin/add_product.html", {
+        "form": form, 
+        "categories": categories
+    })
 
 @admin_required
 def edit_product(request, id):
     product = get_object_or_404(Product, id=id)
-    categories = Category.objects.all()
-
+    
     if request.method == "POST":
-        product.name = request.POST.get("name")
-        product.category_id = request.POST.get("category")
-        product.price = float(request.POST.get("price"))
-        product.stock = int(request.POST.get("stock"))
-        product.description = request.POST.get("description")
-        product.is_featured = request.POST.get("is_featured") == "on"
-
-        # ✅ Only update image if uploaded
-        if request.FILES.get("card_image"):
-            product.card_image = request.FILES.get("card_image")
-
-        if request.FILES.get("detail_image"):
-            product.detail_image = request.FILES.get("detail_image")
-
-        product.save()
-
-        return redirect("admin_products")
-
+        form = ProductForm(request.POST, request.FILES, instance=product)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Product updated successfully!")
+            return redirect("admin_products")
+    else:
+        form = ProductForm(instance=product)
+    
+    categories = Category.objects.all()
     return render(request, "admin/edit_product.html", {
+        "form": form,
         "product": product,
         "categories": categories
     })

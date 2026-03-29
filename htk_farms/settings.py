@@ -28,6 +28,7 @@ SECRET_KEY = 'django-insecure-18njs_v@+i=0!nl6g)11dp=^n=8%o^&b1uof3c&3ehu6m537y(
 DEBUG = False
 
 ALLOWED_HOSTS = ['*']
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
 
 # Application definition
@@ -143,6 +144,11 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 
 
+# Explicit storage (fixes DEBUG=False issues)
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
+
+
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 
@@ -155,8 +161,7 @@ EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'kkmoneytest@gmail.com'
 EMAIL_HOST_PASSWORD = 'qlpz nvbj ubyt zpng'
 
-
-MEDIA_URL = "/media/"
-MEDIA_ROOT = BASE_DIR / "media"
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 LOGIN_URL = '/login/'

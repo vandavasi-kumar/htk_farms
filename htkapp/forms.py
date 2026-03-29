@@ -1,5 +1,5 @@
 from django import forms
-from .models import Order
+from .models import Order, Product
 import re
 
 class CheckoutForm(forms.ModelForm):
@@ -128,3 +128,38 @@ class ContactForm(forms.Form):
     name = forms.CharField(max_length=100)
     email = forms.EmailField()  # ✅ strong validation
     message = forms.CharField(widget=forms.Textarea)
+
+
+# 🔥 PRODUCT FORM FOR ADMIN UPLOADS (validation + ImageField handling)
+class ProductForm(forms.ModelForm):
+    class Meta:
+        model = Product
+        fields = ['name', 'category', 'price', 'stock', 'description', 
+                 'card_image', 'detail_image', 'is_featured']
+        widgets = {
+            'name': forms.TextInput(attrs={'class': 'form-control'}),
+            'price': forms.NumberInput(attrs={'class': 'form-control', 'step': '0.01'}),
+            'stock': forms.NumberInput(attrs={'class': 'form-control'}),
+            'description': forms.Textarea(attrs={'class': 'form-control', 'rows': 4}),
+            'is_featured': forms.CheckboxInput(attrs={'class': 'form-check-input'}),
+            'card_image': forms.FileInput(attrs={'class': 'form-control'}),
+            'detail_image': forms.FileInput(attrs={'class': 'form-control'}),
+        }
+    
+    def clean_card_image(self):
+        image = self.cleaned_data.get('card_image')
+        if image:
+            if image.size > 5 * 1024 * 1024:  # 5MB max
+                raise forms.ValidationError("Card image too large (max 5MB)")
+            if not image.content_type.startswith('image/'):
+                raise forms.ValidationError("Card image must be an image")
+        return image
+    
+    def clean_detail_image(self):
+        image = self.cleaned_data.get('detail_image')
+        if image:
+            if image.size > 5 * 1024 * 1024:  # 5MB max
+                raise forms.ValidationError("Detail image too large (max 5MB)")
+            if not image.content_type.startswith('image/'):
+                raise forms.ValidationError("Detail image must be an image")
+        return image

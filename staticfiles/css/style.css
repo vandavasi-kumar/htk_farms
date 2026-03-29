@@ -1,5 +1,5 @@
 body {
-    padding-top: 80px;
+    padding-top: 50px;
 }
 
 
@@ -274,11 +274,11 @@ body {
 
 
 .navbar .btn {
-    height: 36px;
-    padding: 8px 12px;
+    height: 32px;
+    padding: 6px 10px;
     display: flex;
     align-items: center;
-    font-size: 14px;
+    font-size: 13px;
 }
 
 .eye {
@@ -564,7 +564,7 @@ section,
 .navbar {
     padding-top: 0 !important;
     padding-bottom: 0 !important;
-    min-height: 45px;
+    min-height: 40px;
 }
 
 .navbar-brand {
@@ -573,7 +573,7 @@ section,
 }
 
 .navbar-nav .nav-link {
-    padding-top: 10px;
-    padding-bottom: 10px;
-    font-size: 15px;
+    padding-top: 6px;
+    padding-bottom: 6px;
+    font-size: 14px;
 }
