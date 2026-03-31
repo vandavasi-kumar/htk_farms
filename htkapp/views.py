@@ -29,7 +29,10 @@ import io
 import os
 from datetime import timedelta
 # PDF
-from xhtml2pdf import pisa
+try:
+    from xhtml2pdf import pisa
+except:
+    pisa = None
 from reportlab.pdfgen import canvas
 # Admin decorator
 from .decorators import admin_required
@@ -708,6 +711,10 @@ def download_receipt(request, id):
         'seal_path': seal_path,
     })
 
+    # ✅ HANDLE MISSING xhtml2pdf
+    if not pisa:
+        return HttpResponse("PDF feature temporarily disabled", status=200)
+
     result = io.BytesIO()
     pdf = pisa.pisaDocument(io.BytesIO(html_string.encode("UTF-8")), result)
 
@@ -718,7 +725,6 @@ def download_receipt(request, id):
     response['Content-Disposition'] = f'attachment; filename="receipt_{order.id}.pdf"'
 
     return response
-
 @login_required
 def user_settings(request):
 
