@@ -1,4 +1,5 @@
 from django.db import models
+from cloudinary.models import CloudinaryField
 
 # Create your models here.
 from django.contrib.auth.models import User
@@ -35,12 +36,14 @@ class Product(models.Model):
     name = models.CharField(max_length=200)
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
     price = models.DecimalField(max_digits=10, decimal_places=2)
-    card_image = models.ImageField(upload_to="products/cards/")
-    detail_image = models.ImageField(upload_to="products/details/")
+    # card_image = models.ImageField(upload_to="products/cards/")
+    # detail_image = models.ImageField(upload_to="products/details/")
+    card_image = CloudinaryField('image')
+    detail_image = CloudinaryField('image')
     description = models.TextField()
     stock = models.IntegerField()
     is_featured = models.BooleanField(default=False)
-    
+
     def __str__(self):
         return self.name
     
@@ -120,7 +123,8 @@ class Testimonial(models.Model):
     name = models.CharField(max_length=100)
     message = models.TextField()
     rating = models.IntegerField(default=5)
-    image = models.ImageField(upload_to='testimonials/', null=True, blank=True)  # ✅ NEW
+    # image = models.ImageField(upload_to='testimonials/', null=True, blank=True)  # ✅ NEW
+    image = CloudinaryField('image', null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):

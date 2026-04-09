@@ -48,6 +48,8 @@ path("admin-products/edit/<int:id>/", views.edit_product, name="edit_product"),
 path("admin-products/delete/<int:id>/", views.delete_product, name="delete_product"),
 path('admin-users/', views.admin_users, name='admin_users'),
 path('admin-users/delete/<int:id>/', views.delete_user, name='delete_user'),
+path('admin-categories/', views.manage_categories, name='manage_categories'),
+path('delete-category/<int:id>/', views.delete_category, name='delete_category'),
 
 
 

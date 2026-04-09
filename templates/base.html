@@ -15,8 +15,7 @@
     <div class="spinner"></div>
   </div>
   <!-- Toast Container -->
-  <div id="toast" class="toast"></div>
-
+<div id="toast" class="toast"></div>
   <!-- Navbar -->
 
   <nav class="navbar navbar-expand-lg navbar-dark bg-success fixed-top shadow">
@@ -138,15 +137,14 @@
 
 
   {% if messages %}
-  <div class="container mt-3">
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
     {% for message in messages %}
-    <div class="alert alert-success alert-dismissible fade show" role="alert">
-      {{ message }}
-      <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-    </div>
+      showToast("{{ message }}", "success");
     {% endfor %}
-  </div>
-  {% endif %}
+  });
+</script>
+{% endif %}
 
 
   <!-- Login Modal -->

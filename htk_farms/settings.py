@@ -41,6 +41,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'htkapp',
+    'cloudinary',
+    'cloudinary_storage',
 ]
 
 MIDDLEWARE = [
@@ -165,3 +167,17 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 LOGIN_URL = '/login/'
+
+import cloudinary
+
+cloudinary.config(
+  cloud_name = "dmawvhfob",
+  api_key = "946131614964785",
+  api_secret = "ssQMOs0oL9RiuhhWsgWHCVm-Kp8"
+)
+# cloudinary.config(
+#   cloud_name = os.environ.get("dmawvhfob"),
+#   api_key = os.environ.get("946131614964785"),
+#   api_secret = os.environ.get("ssQMOs0oL9RiuhhWsgWHCVm-Kp8")
+# )
+DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'

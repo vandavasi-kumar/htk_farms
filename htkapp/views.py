@@ -221,6 +221,7 @@ def verify_email_otp(request):
         
 def products(request):
     category_id = request.GET.get("category")
+    
     if category_id:
         products = Product.objects.filter(category_id=category_id)
     else:
@@ -1070,3 +1071,21 @@ def add_testimonial(request):
         )
 
         return redirect("home")
+    
+from .models import Category
+from django.shortcuts import render, redirect
+
+def manage_categories(request):
+    if request.method == "POST":
+        name = request.POST.get("name")
+        if name:
+            Category.objects.create(name=name)
+            return redirect('manage_categories')
+
+    categories = Category.objects.all()
+    return render(request, 'admin/manage_categories.html', {'categories': categories})
+
+def delete_category(request, id):
+    category = Category.objects.get(id=id)
+    category.delete()
+    return redirect('manage_categories')

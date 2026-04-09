@@ -115,31 +115,39 @@ footer a:hover {
 
 .toast {
     position: fixed;
-    top: 80px;
-    /* below navbar */
+    top: 90px; /* adjust below navbar */
     left: 50%;
-    transform: translateX(-50%);
-    background: green;
-    color: white;
-    padding: 12px 20px;
-    border-radius: 8px;
-    display: none;
-    z-index: 9999;
-    font-weight: bold;
-    min-width: 250px;
+    transform: translateX(-50%) translateY(-20px);
+
+    background: #28a745;
+    color: #fff;
+
+    padding: 14px 22px;
+    border-radius: 10px;
+
+    min-width: 280px;
+    max-width: 400px;
+
     text-align: center;
+    font-weight: 500;
+
+    box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+
     opacity: 0;
-    transition: opacity 0.3s ease, top 0.3s ease;
+    visibility: hidden;
+
+    transition: all 0.3s ease;
+    z-index: 9999;
 }
 
 .toast.show {
-    display: block;
     opacity: 1;
-    top: 90px;
+    visibility: visible;
+    transform: translateX(-50%) translateY(0);
 }
 
 .loader {
-    display: none;
+    /* display: none; */
     position: fixed;
     top: 0;
     left: 0;
@@ -149,6 +157,18 @@ footer a:hover {
     z-index: 9999;
     justify-content: center;
     align-items: center;
+}
+.toast.success {
+    background: #28a745;
+}
+
+.toast.error {
+    background: #dc3545;
+}
+
+.toast.warning {
+    background: #ffc107;
+    color: #000;
 }
 
 .spinner {

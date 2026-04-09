@@ -23,23 +23,6 @@
             {% endif %}
           </div>
         {% endfor %}
-        
-        <!-- Override category select with custom -->
-        <div class="mb-3">
-          <label>Category</label>
-          <select name="category" class="form-select" required>
-            <option value="">Select Category</option>
-            {% for c in categories %}
-              <option value="{{ c.id }}" {% if form.category.value == c.id %}selected{% endif %}>{{ c.name }}</option>
-            {% endfor %}
-          </select>
-        </div>
-        
-        <!-- Custom featured checkbox -->
-        <div class="mb-3 form-check">
-          {{ form.is_featured }}
-          <label class="form-check-label fw-bold">🌟 Featured Product (Shows on Home)</label>
-        </div>
 
         <button class="btn btn-success w-100">
           Add Product
